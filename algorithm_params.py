@@ -18,4 +18,9 @@ class AlgorithmParams:
         self.mutation = mutation
 
     def operators_results(self):
-        return f"-- Grade_strategy: {self.grade_strategy}, Selection: {self.selection}, Crossover: {self.crossover}, Mutation: {self.mutation} -- "
+        return f"Grade strategy: {self.grade_strategy}, Selection: {self.selection}, Crossover: {self.crossover}, " \
+               f"Mutation: {self.mutation}"
+
+    def file_path(self):
+        return f"Grade_strategy_{self.grade_strategy}_Selection_{self.selection}_Crossover_{self.crossover}_" \
+               f"Mutation_{self.mutation}"

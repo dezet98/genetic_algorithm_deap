@@ -8,6 +8,7 @@ from algorithm_params import AlgorithmParams
 from grade_strategy import GradeStrategy
 from mutation import Mutation
 from selection import Selection
+from utils import print_epoch_results, draw_chart
 
 
 def individual(icls):
@@ -65,6 +66,7 @@ def genetic_algorithm(algorithm_params, use_global_operators):
 
     g = 0
     number_elitism = 1
+    best_results, avg_results, std_results = [], [], []
     while g < algorithm_params.number_iteration:
         g = g + 1
 
@@ -106,35 +108,31 @@ def genetic_algorithm(algorithm_params, use_global_operators):
 
         pop[:] = offspring + list_elitism
 
-        # Gather all the fitnesses in one list and print the stats
         # print_epoch_results(pop, g, invalid_ind)
 
-    # print_epoch_results(pop, g, None)
-    # print("-- End of (successful) evolution --")
+        fits = [ind.fitness.values[0] for ind in pop]
+        length = len(pop)
+        mean = sum(fits) / length
+        sum2 = sum(x * x for x in fits)
+        std = abs(sum2 / length - mean ** 2) ** 0.5
+        best_ind = tools.selBest(pop, 1)[0]
+
+        best_results.append(best_ind.fitness.values[0])
+        avg_results.append(mean)
+        std_results.append(std)
+
+    # best_ind = tools.selBest(pop, 1)[0]
+    # print("Best individual is %s, %s" % (best_ind, best_ind.fitness.values))
+    # todo
+    draw_chart(algorithm_params, best_results, avg_results, std_results, g, None)
+    # print(best_results, avg_results, std_results, sep="\n\n")
     # print(algorithm_params.operators_results())
 
 
-def print_epoch_results(pop, g, invalid_ind):
-    print("-- Generation %i --" % g)
-    if invalid_ind is not None:
-        print(" Evaluated %i individuals" % len(invalid_ind))
-
-    fits = [ind.fitness.values[0] for ind in pop]
-
-    length = len(pop)
-    mean = sum(fits) / length
-    sum2 = sum(x * x for x in fits)
-    std = abs(sum2 / length - mean ** 2) ** 0.5
-
-    print(" Min %s" % min(fits))
-    print(" Max %s" % max(fits))
-    print(" Avg %s" % mean)
-    print(" Std %s" % std)
-    best_ind = tools.selBest(pop, 1)[0]
-    print("Best individual is %s, %s" % (best_ind, best_ind.fitness.values))
-
-
 if __name__ == '__main__':
+    # genetic_algorithm(AlgorithmParams(GradeStrategy.min, Selection.best, Crossover.one_point, Mutation.gaussian),
+    # False)
+
     for gs in GradeStrategy.grade_strategies:
         for sel in Selection.allSelection:
             for cx in Crossover.allCrossover:

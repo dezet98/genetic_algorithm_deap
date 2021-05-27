@@ -5,9 +5,9 @@ class Mutation:
     gaussian = "gaussian"
     shuffle_indexes = "shuffle_indexes"
     flip_bit = "flip_bit"
-    polynomial_bounded = "polynomial_bounded"
+    # polynomial_bounded = "polynomial_bounded"
 
-    allMutation = [gaussian, shuffle_indexes, flip_bit, polynomial_bounded]
+    allMutation = [gaussian, shuffle_indexes, flip_bit] #, polynomial_bounded]
 
     def __init__(self, name, toolbox):
         self.name = name
@@ -17,8 +17,8 @@ class Mutation:
             self._shuffle_indexes(toolbox)
         elif name == self.flip_bit:
             self._flip_bit(toolbox)
-        elif name == self.polynomial_bounded:
-            self._polynomial_bounded(toolbox)
+        # elif name == self.polynomial_bounded:
+        #     self._polynomial_bounded(toolbox)
         else:
             raise KeyError
 
@@ -42,6 +42,6 @@ class Mutation:
     def _flip_bit(toolbox):
         toolbox.register("mutate", tools.mutFlipBit, indpb=1.0)
 
-    @staticmethod
-    def _polynomial_bounded(toolbox):
-        toolbox.register("mutate", tools.mutPolynomialBounded, eta=20.0, low=0.0, up=1.0, indpb=1.0)
+    # @staticmethod
+    # def _polynomial_bounded(toolbox):
+    #     toolbox.register("mutate", tools.mutPolynomialBounded, eta=20.0, low=0.0, up=1.0, indpb=1.0)

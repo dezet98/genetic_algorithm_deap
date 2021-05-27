@@ -7,10 +7,11 @@ class Crossover:
     uniform = "uniform"
     arithmetic = "_arithmetic"
     heuristic = "heuristic"
-    ordered = "ordered"
-    simulated_binary_bounded = "simulated_binary_bounded"
+    # ordered = "ordered"
+    # simulated_binary_bounded = "simulated_binary_bounded"
 
-    allCrossover = [one_point, uniform, arithmetic, heuristic, ordered, simulated_binary_bounded]
+    # allCrossover = [one_point, uniform, arithmetic, heuristic, ordered, simulated_binary_bounded]
+    allCrossover = [one_point, uniform, arithmetic, heuristic]
 
     def __init__(self, name, toolbox):
         self.name = name
@@ -22,8 +23,8 @@ class Crossover:
             self._arithmetic(toolbox)
         elif name == self.heuristic:
             self._heuristic(toolbox)
-        elif name == self.ordered:
-            self._ordered(toolbox)
+        # elif name == self.ordered:
+        #     self._ordered(toolbox)
         elif name == self.simulated_binary_bounded:
             self._simulated_binary_bounded(toolbox)
         else:
@@ -53,13 +54,13 @@ class Crossover:
     def _heuristic(toolbox):
         toolbox.register("mate", Crossover._cx_heuristic, indpb=1.0)
 
-    @staticmethod
-    def _ordered(toolbox):
-        toolbox.register("mate", tools.cxOrdered)
+    # @staticmethod
+    # def _ordered(toolbox):
+    #     toolbox.register("mate", tools.cxOrdered)
 
-    @staticmethod
-    def _simulated_binary_bounded(toolbox):
-        toolbox.register("mate", tools.cxSimulatedBinaryBounded, eta=20.0, low=0.0, up=1.0)
+    # @staticmethod
+    # def _simulated_binary_bounded(toolbox):
+    #     toolbox.register("mate", tools.cxSimulatedBinaryBounded, eta=20.0, low=0.0, up=1.0)
 
     # own crossover methods
     @staticmethod
