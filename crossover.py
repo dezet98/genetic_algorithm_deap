@@ -5,7 +5,7 @@ from deap import tools
 class Crossover:
     one_point = "one_point"
     uniform = "uniform"
-    arithmetic = "_arithmetic"
+    arithmetic = "arithmetic"
     heuristic = "heuristic"
     # ordered = "ordered"
     # simulated_binary_bounded = "simulated_binary_bounded"
@@ -44,15 +44,15 @@ class Crossover:
 
     @staticmethod
     def _uniform(toolbox):
-        toolbox.register("mate", tools.cxUniform, indpb=1.0)
+        toolbox.register("mate", tools.cxUniform, indpb=0.5)
 
     @staticmethod
     def _arithmetic(toolbox):
-        toolbox.register("mate", Crossover._cx_arithmetic, indpb=1.0)
+        toolbox.register("mate", Crossover._cx_arithmetic)
 
     @staticmethod
     def _heuristic(toolbox):
-        toolbox.register("mate", Crossover._cx_heuristic, indpb=1.0)
+        toolbox.register("mate", Crossover._cx_heuristic)
 
     # @staticmethod
     # def _ordered(toolbox):
@@ -64,47 +64,36 @@ class Crossover:
 
     # own crossover methods
     @staticmethod
-    def _cx_arithmetic(ind1, ind2, indpb):
-        """Executes a arithmetic crossover that modify in place the two
-        :term:`sequence` individuals. The attributes are swapped accordingto the
-        *indpb* probability.
-
+    def _cx_arithmetic(ind1, ind2):
+        """
         :param ind1: The first individual participating in the crossover.
         :param ind2: The second individual participating in the crossover.
-        :param indpb: Independent probabily for each attribute to be exchanged.
         :returns: A tuple of two individuals.
 
         This function uses the :func:`~random.random` function from the python base
         :mod:`random` module.
         """
+        k = random.uniform(0, 1)
         size = min(len(ind1), len(ind2))
+
         for i in range(size):
-            if random.random() < indpb:
-                # todo
-                # ind1[i], ind2[i] = ind2[i], ind1[i]
-                pass
+            ind1[i], ind2[i] = ind1[i] + k * (ind2[i] - ind1[i]), ind2[i] - k * (ind2[i] - ind1[i])
 
         return ind1, ind2
 
     @staticmethod
-    def _cx_heuristic(ind1, ind2, indpb):
-        """Executes a heuristic crossover that modify in place the two
-        :term:`sequence` individuals. The attributes are swapped accordingto the
-        *indpb* probability.
-
+    def _cx_heuristic(ind1, ind2):
+        """
         :param ind1: The first individual participating in the crossover.
         :param ind2: The second individual participating in the crossover.
-        :param indpb: Independent probabily for each attribute to be exchanged.
         :returns: A tuple of two individuals.
 
         This function uses the :func:`~random.random` function from the python base
         :mod:`random` module.
         """
-        size = min(len(ind1), len(ind2))
-        for i in range(size):
-            if random.random() < indpb:
-                # todo
-                # ind1[i], ind2[i] = ind2[i], ind1[i]
-                pass
+        k = random.uniform(0, 1)
 
-        return ind1, ind2
+        if ind2.fitness.values >= ind2.fitness.values:
+            return k * (ind2[0] - ind1[0]) + ind2[0], k * (ind2[1] - ind1[1]) + ind2[1]
+        else:
+            return k * (ind1[0] - ind2[0]) + ind1[0], k * (ind1[1] - ind2[1]) + ind1[1]

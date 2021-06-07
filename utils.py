@@ -1,5 +1,6 @@
 from deap import tools
 import matplotlib.pyplot as plt
+import csv
 
 
 def print_epoch_results(pop, g, invalid_ind):
@@ -22,6 +23,21 @@ def print_epoch_results(pop, g, invalid_ind):
     print("Best individual is %s, %s" % (best_ind, best_ind.fitness.values))
 
 
+def save_results_to_csv(best_ind, mean, std, algorithm_params):
+    with open('data/results.csv', 'a', newline='') as file:
+        writer = csv.writer(file)
+        writer.writerow([algorithm_params.grade_strategy, algorithm_params.selection, algorithm_params.crossover,
+                         algorithm_params.mutation, best_ind[0], best_ind[1], best_ind.fitness.values[0],
+                         mean, std, algorithm_params.operators_results()])
+
+
+def init_results_csv():
+    with open('data/results.csv', 'a', newline='') as file:
+        writer = csv.writer(file)
+        writer.writerow(
+            ["grade strategy", "selection", "crossover", "mutation", "x", "y", "best", "mean", "std", "all params"])
+
+
 def draw_chart(algorithm_params, best_results, avg_results, std_results, generation, invalid_ind):
     fig = plt.figure(figsize=(10, 8))
     fig.suptitle(algorithm_params.operators_results(), fontsize=16)
@@ -37,6 +53,22 @@ def draw_chart(algorithm_params, best_results, avg_results, std_results, generat
 
     plt.savefig(file_name, dpi=300, bbox_inches='tight')
     # plt.show()
+
+
+def draw_time_chart(processes, time):
+    fig = plt.figure(figsize=(10, 8))
+
+    plt.scatter(processes, time)
+    plt.xlabel('Processes')
+    plt.ylabel('Time')
+    plt.title('Graph of the dependence of time on the number of processes')
+    file_name = "data/" + "time_and_processes" + ".png"
+
+    fig.tight_layout()
+    fig.subplots_adjust(top=0.9)
+
+    plt.savefig(file_name, dpi=300, bbox_inches='tight')
+    plt.show()
 
 
 def save_best(ax, best_results, generation):

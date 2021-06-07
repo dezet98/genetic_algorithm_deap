@@ -1,4 +1,4 @@
-from deap import tools, base, creator
+from deap import base, creator
 
 
 class GradeStrategy:

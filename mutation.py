@@ -32,15 +32,15 @@ class Mutation:
 
     @staticmethod
     def _gaussian(toolbox):
-        toolbox.register("mutate", tools.mutGaussian, mu=5, sigma=10, indpb=1.0)
+        toolbox.register("mutate", tools.mutGaussian, mu=5, sigma=10, indpb=0.5)
 
     @staticmethod
     def _shuffle_indexes(toolbox):
-        toolbox.register("mutate", tools.mutShuffleIndexes, indpb=1.0)
+        toolbox.register("mutate", tools.mutShuffleIndexes, indpb=0.5)
 
     @staticmethod
     def _flip_bit(toolbox):
-        toolbox.register("mutate", tools.mutFlipBit, indpb=1.0)
+        toolbox.register("mutate", tools.mutFlipBit, indpb=0.5)
 
     # @staticmethod
     # def _polynomial_bounded(toolbox):
