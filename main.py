@@ -17,10 +17,12 @@ def multiprocessing_test():
     for processes in [1, 2, 4, 8, 16]:
         t0 = time.time()
 
-        GeneticAlgorithm.run(AlgorithmParams(GradeStrategy.min, Selection.best, Crossover.one_point, Mutation.gaussian,
-                                             size_population=1000, number_iteration=1000),
-                             processes=processes, use_global_operators=False,
-                             print_results=False, save_to_csv=False, save_charts=False)
+        GeneticAlgorithm.run(
+            AlgorithmParams(GradeStrategy.min, Selection.best, Crossover.one_point, Mutation.shuffle_indexes,
+                            size_population=90, probability_mutation=0.2, probability_crossover=0.8,
+                            number_iteration=100, classifier=Classifiers.svc), processes=processes,
+            use_global_operators=False,
+            print_results=False, save_to_csv=False, save_charts=False)
 
         multiprocessing_results['time'].append(time.time() - t0)
         multiprocessing_results['processes'].append(processes)
@@ -46,8 +48,9 @@ def params_test():
 def single_test():
     GeneticAlgorithm.run(
         AlgorithmParams(GradeStrategy.min, Selection.best, Crossover.one_point, Mutation.shuffle_indexes,
-                        size_population=50, probability_mutation=0.2, probability_crossover=0.8,
-                        number_iteration=25, classifier=Classifiers.svc), processes=1, use_global_operators=False,
+                        size_population=90, probability_mutation=0.2, probability_crossover=0.8,
+                        number_iteration=100, classifier=Classifiers.svc), processes=1,
+        use_global_operators=False,
         print_results=True, save_to_csv=True, save_charts=True)
 
 

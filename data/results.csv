@@ -1,2 +1,3 @@
-grade strategy,selection,crossover,mutation,x,y,best,mean,std,all params
-grade strategy,selection,crossover,mutation,x,y,best,mean,std,all params
+classifier,grade strategy,selection,crossover,mutation,best_ind,best_ind.fitness.values,mean,std,all params
+svc,min,best,one_point,shuffle_indexes,"['sigmoid', 22.696545977662733, 4.363446897405564, 0.346763722216256, 7.7414616214388925, 1, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 0, 1, 1, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0]","(0.23333333333333334,)",0.5201111111111112,0.2277500389613874,"Classifier: svc, Grade strategy: min, Selection: best, Crossover: one_point, Mutation: shuffle_indexes, Size population: 50, Probability mutation: 0.2, Probability crossover: 0.8, Number iteration: 25 "
+classifier,grade strategy,selection,crossover,mutation,best_ind,best_ind.fitness.values,mean,std,all params

@@ -26,8 +26,9 @@ def print_epoch_results(pop, g, invalid_ind):
 def save_results_to_csv(best_ind, mean, std, algorithm_params):
     with open('data/results.csv', 'a', newline='') as file:
         writer = csv.writer(file)
-        writer.writerow([algorithm_params.grade_strategy, algorithm_params.selection, algorithm_params.crossover,
-                         algorithm_params.mutation, best_ind[0], best_ind[1], best_ind.fitness.values[0],
+        writer.writerow([algorithm_params.classifier, algorithm_params.grade_strategy, algorithm_params.selection,
+                         algorithm_params.crossover,
+                         algorithm_params.mutation, best_ind, best_ind.fitness.values,
                          mean, std, algorithm_params.operators_results()])
 
 
@@ -35,7 +36,8 @@ def init_results_csv():
     with open('data/results.csv', 'a', newline='') as file:
         writer = csv.writer(file)
         writer.writerow(
-            ["grade strategy", "selection", "crossover", "mutation", "x", "y", "best", "mean", "std", "all params"])
+            ["classifier", "grade strategy", "selection", "crossover", "mutation", "best_ind",
+             "best_ind.fitness.values", "mean", "std", "all params"])
 
 
 def draw_chart(algorithm_params, best_results, avg_results, std_results, generation, invalid_ind):

@@ -68,7 +68,7 @@ class Crossover:
         """
         :param ind1: The first individual participating in the crossover.
         :param ind2: The second individual participating in the crossover.
-        :returns: A tuple of two individuals.
+        :returns: A tuple of decision_tree_classifier individuals.
 
         This function uses the :func:`~random.random` function from the python base
         :mod:`random` module.
@@ -86,7 +86,7 @@ class Crossover:
         """
         :param ind1: The first individual participating in the crossover.
         :param ind2: The second individual participating in the crossover.
-        :returns: A tuple of two individuals.
+        :returns: A tuple of decision_tree_classifier individuals.
 
         This function uses the :func:`~random.random` function from the python base
         :mod:`random` module.

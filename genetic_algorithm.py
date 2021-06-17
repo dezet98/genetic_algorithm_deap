@@ -33,7 +33,8 @@ class GeneticAlgorithm:
     def register_functions(toolbox, algorithm_params):
         y, df, number_of_attributes = None, None, None
         if algorithm_params.classifier != Classifiers.own:
-            df, y, number_of_attributes = GeneticAlgorithm.data_file_properties()
+            # todo here you can change file to read data
+            df, y, number_of_attributes = GeneticAlgorithm.own_data_file_properties()
 
         Classifiers.register(algorithm_params.classifier, toolbox, y, df, number_of_attributes)
 
@@ -74,7 +75,7 @@ class GeneticAlgorithm:
 
             # Apply crossover and mutation on the offspring
             for child1, child2 in zip(offspring[::2], offspring[1::2]):
-                # cross two individuals with probability CXPB
+                # cross decision_tree_classifier individuals with probability CXPB
                 if random.random() < algorithm_params.probability_crossover:
                     toolbox.mate(child1, child2)
                     # fitness values of the children
@@ -127,6 +128,18 @@ class GeneticAlgorithm:
         df.drop('Status', axis=1, inplace=True)
         df.drop('ID', axis=1, inplace=True)
         df.drop('Recording', axis=1, inplace=True)
+        number_of_attributes = len(df.columns)
+        print(df.columns)
+        print(number_of_attributes)
+
+        return df, y, number_of_attributes
+
+    @staticmethod
+    def own_data_file_properties():
+        pd.set_option('display.max_columns', None)
+        df = pd.read_csv("Breast.csv", sep=',')
+        y = df['Classification']
+        df.drop('Classification', axis=1, inplace=True)
         number_of_attributes = len(df.columns)
         print(df.columns)
         print(number_of_attributes)
