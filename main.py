@@ -1,7 +1,9 @@
 import time
 
 from algorithm_params import AlgorithmParams
+from classifier import Classifiers
 from crossover import Crossover
+from fitness import Fitnesses
 from genetic_algorithm import GeneticAlgorithm
 from grade_strategy import GradeStrategy
 from mutation import Mutation
@@ -43,23 +45,24 @@ def params_test():
 
 def single_test():
     GeneticAlgorithm.run(
-        AlgorithmParams(GradeStrategy.min, Selection.best, Crossover.heuristic, Mutation.gaussian,
-                        size_population=100, probability_mutation=0.2, probability_crossover=0.8,
-                        number_iteration=100), processes=1, use_global_operators=False,
+        AlgorithmParams(GradeStrategy.min, Selection.best, Crossover.one_point, Mutation.shuffle_indexes,
+                        size_population=50, probability_mutation=0.2, probability_crossover=0.8,
+                        number_iteration=25, classifier=Classifiers.svc), processes=1, use_global_operators=False,
         print_results=True, save_to_csv=True, save_charts=True)
 
 
 def own_test():
     GeneticAlgorithm.run(
-        AlgorithmParams(GradeStrategy.min, Selection.best, Crossover.one_point, Mutation.gaussian, size_population=100,
+        AlgorithmParams(GradeStrategy.min, Selection.best, Crossover.one_point, Mutation.gaussian, size_population=70,
                         probability_mutation=0.2, probability_crossover=0.8,
-                        number_iteration=100),
+                        number_iteration=70),
         processes=1, use_global_operators=True,
         print_results=True, save_to_csv=True, save_charts=True)
 
 
 if __name__ == '__main__':
     # multiprocessing_test()
-    params_test()
+    # params_test()
     # single_test()
     # own_test()
+    single_test()

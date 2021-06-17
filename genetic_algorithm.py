@@ -1,11 +1,9 @@
-import math
 import multiprocessing
-import random
-
 from deap import base
-from deap import creator
 from deap import tools
-
+import pandas as pd
+import random
+from algorithm_params import Classifiers
 from crossover import Crossover
 from grade_strategy import GradeStrategy
 from mutation import Mutation
@@ -14,40 +12,30 @@ from utils import draw_chart, save_results_to_csv, init_results_csv, print_epoch
 
 
 class GeneticAlgorithm:
-    @staticmethod
-    def individual(icls):
-        genome = list()
-        genome.append(random.uniform(-1.5, 4))
-        genome.append(random.uniform(-3, 4))
-
-        return icls(genome)
-
-    @staticmethod
-    def fitness_function(individual_value):
-        result = math.sin((individual_value[0] + individual_value[1])) + math.pow(
-            (individual_value[0] - individual_value[1]), 2) - 1.5 * individual_value[0] + 2.5 * individual_value[1] + 1
-
-        return (result,)
 
     @staticmethod
     def pass_operators(algorithm_params):
+        algorithm_params.classifier = Classifiers.allClassifiers[int(input(Classifiers.options()))]
         algorithm_params.grade_strategy = GradeStrategy.grade_strategies[int(input(GradeStrategy.options()))]
         algorithm_params.selection = Selection.allSelection[int(input(Selection.options()))]
         algorithm_params.crossover = Crossover.allCrossover[int(input(Crossover.options()))]
-        algorithm_params.mutation = Mutation.allMutation[int(input(Mutation.options()))]
+        if algorithm_params.classifier == Classifiers.own:
+            algorithm_params.mutation = Mutation.allMutation[int(input(Mutation.options()))]
 
     @staticmethod
     def register_operators(toolbox, algorithm_params):
         GradeStrategy(algorithm_params.grade_strategy)
         Selection(algorithm_params.selection, toolbox)
         Crossover(algorithm_params.crossover, toolbox)
-        Mutation(algorithm_params.mutation, toolbox)
+        Mutation(algorithm_params.mutation, toolbox, algorithm_params.classifier)
 
     @staticmethod
-    def register_functions(toolbox):
-        toolbox.register("individual", GeneticAlgorithm.individual, creator.Individual)
-        toolbox.register("population", tools.initRepeat, list, toolbox.individual)
-        toolbox.register("evaluate", GeneticAlgorithm.fitness_function)
+    def register_functions(toolbox, algorithm_params):
+        y, df, number_of_attributes = None, None, None
+        if algorithm_params.classifier != Classifiers.own:
+            df, y, number_of_attributes = GeneticAlgorithm.data_file_properties()
+
+        Classifiers.register(algorithm_params.classifier, toolbox, y, df, number_of_attributes)
 
     @staticmethod
     def run(algorithm_params, use_global_operators, processes=1, print_results=False, save_to_csv=True,
@@ -57,7 +45,7 @@ class GeneticAlgorithm:
         if use_global_operators:
             GeneticAlgorithm.pass_operators(algorithm_params)
         GeneticAlgorithm.register_operators(toolbox, algorithm_params)
-        GeneticAlgorithm.register_functions(toolbox)
+        GeneticAlgorithm.register_functions(toolbox, algorithm_params)
 
         if __name__ == "__main__":
             pool = multiprocessing.Pool(processes=processes)
@@ -74,7 +62,7 @@ class GeneticAlgorithm:
             init_results_csv()
         while g < algorithm_params.number_iteration:
             g = g + 1
-
+            print("-- Generation %i --" % g)
             # Select the next generation individuals
             offspring = toolbox.select(pop, len(pop))
             # Clone the selected individuals
@@ -130,3 +118,17 @@ class GeneticAlgorithm:
         if print_results:
             print_epoch_results(pop, g, invalid_ind)
             print(algorithm_params.operators_results())
+
+    @staticmethod
+    def data_file_properties():
+        pd.set_option('display.max_columns', None)
+        df = pd.read_csv("data.csv", sep=',')
+        y = df['Status']
+        df.drop('Status', axis=1, inplace=True)
+        df.drop('ID', axis=1, inplace=True)
+        df.drop('Recording', axis=1, inplace=True)
+        number_of_attributes = len(df.columns)
+        print(df.columns)
+        print(number_of_attributes)
+
+        return df, y, number_of_attributes
