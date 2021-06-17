@@ -34,7 +34,7 @@ class GeneticAlgorithm:
         y, df, number_of_attributes = None, None, None
         if algorithm_params.classifier != Classifiers.own:
             # todo here you can change file to read data
-            df, y, number_of_attributes = GeneticAlgorithm.own_data_file_properties()
+            df, y, number_of_attributes = GeneticAlgorithm.data_file_properties()
 
         Classifiers.register(algorithm_params.classifier, toolbox, y, df, number_of_attributes)
 

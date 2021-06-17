@@ -47,16 +47,16 @@ def params_test():
 
 def single_test():
     GeneticAlgorithm.run(
-        AlgorithmParams(GradeStrategy.min, Selection.best, Crossover.one_point, Mutation.shuffle_indexes,
-                        size_population=90, probability_mutation=0.2, probability_crossover=0.8,
-                        number_iteration=100, classifier=Classifiers.svc), processes=1,
+        AlgorithmParams(GradeStrategy.max, Selection.best, Crossover.one_point, Mutation.shuffle_indexes,
+                        size_population=70, probability_mutation=0.2, probability_crossover=0.8,
+                        number_iteration=90, classifier=Classifiers.mlp_classifier), processes=1,
         use_global_operators=False,
         print_results=True, save_to_csv=True, save_charts=True)
 
 
 def own_test():
     GeneticAlgorithm.run(
-        AlgorithmParams(GradeStrategy.min, Selection.best, Crossover.one_point, Mutation.gaussian, size_population=70,
+        AlgorithmParams(GradeStrategy.max, Selection.best, Crossover.one_point, Mutation.gaussian, size_population=70,
                         probability_mutation=0.2, probability_crossover=0.8,
                         number_iteration=70),
         processes=1, use_global_operators=True,
